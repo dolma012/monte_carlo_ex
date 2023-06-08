@@ -1,0 +1,9 @@
+#Your montecarlo.yml file should only be
+#used to define project-level configuration options. 
+# Use separate YML files to define individual monitors.
+
+version: 1
+default_resource: <dwID>  #the warehouse uuid 
+namespace: general # distinct to create new monitors or same to update existing monitors
+include_file_patterns:
+ - ./general/*.yml  #path to all the monitors that will be created/updated 
