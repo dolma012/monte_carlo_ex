@@ -1,0 +1,15 @@
+namespace: testing
+montecarlo:
+  custom_sql:
+    - name: Testing a SQL run
+      description: Just checking that this works
+      schedule: 
+        type: fixed
+        interval_minutes: 1440
+        start_time: '2024-06-07T13:00:00+00:00'
+      sql: |
+        select distinct email from merakidw.fact.cisco_users where deleted_at is null
+      comparisons:
+      - type: threshold
+        operator: LT
+        threshold_value: 0.0
