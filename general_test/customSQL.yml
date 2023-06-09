@@ -1,0 +1,14 @@
+montecarlo:
+  custom_sql:
+    - name: Custom SQL rule
+      description: check user count
+      schedule: 
+        type: fixed
+        interval_minutes: 120
+        start_time: '2023-06-05T13:00:00+00:00'
+      sql: |
+        select distinct email from merakidw.fact.cisco_users where deleted_at is null       
+      comparisons:
+      - type: threshold
+        operator: LT
+        threshold_value: 0.0
