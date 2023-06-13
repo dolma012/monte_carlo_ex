@@ -9,7 +9,6 @@ client=Client(session=Session(mcd_id=mcdId,mcd_token=mcdToken))
 #initialize query object
 query = Query()
 
-
 #query get user function
 query.get_user.__fields__('email')
 print(client(query).get_user.email)
@@ -41,6 +40,38 @@ print(query) #output below
 #     discoveredTime
 #     description
 #  }
+
+
+# initialize arguments to create rule/monitor
+warehouse="<dw_id>"
+comp = {
+    "comparisons": [
+        {
+            "comparison_type": "THRESHOLD",
+            "operator": "GT",
+            "threshold": 0
+        }
+    ]
+}
+s_config = {
+    "interval_minutes": 120,
+    "start_time": "2023-05-25T18:57:27+00:00",
+    "schedule_type": "FIXED"
+}
+sql = "select distinct user_id from merakidw.fact.ga4_events_dashboard_web where import_date = current_date-1"
+name = "pycarlo_check"
+time = "UTC"
+
+mutation.create_or_update_custom_metric_rule(
+    dw_id=warehouse,
+    comparisons=comp["comparisons"],
+    custom_sql=sql,
+    description=name,
+    schedule_config=s_config,
+    timezone=time
+).custom_rule.__fields__("uuid")
+
+print(client(mutation).create_or_update_custom_metric_rule)
 
 # If you are not a fan of sgqlc operations (Query and Mutation) you can also execute any raw query using the client.
 # For instance, if we want the first 10 tables from getTables.
