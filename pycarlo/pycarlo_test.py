@@ -28,7 +28,7 @@ mutation.create_or_update_domain(name=namevar,assignments=mcon_list).domain.__fi
 print(client(mutation).create_or_update_domain)
 
 # the query object is already initialzed, so we can call functions using the same query object
-query.get_table(dw_id="<>", full_table_id="<>").__fields__("mcon", "full_table_id", "discovered_time", "description")
+query.get_table(dw_id="<dwId>", full_table_id="<full_table_id>").__fields__("mcon", "full_table_id", "discovered_time", "description")
 print(client(query).get_table)
 
 # If necessary, you can always generate (e.g. print) the raw query that would be executed.
@@ -62,6 +62,7 @@ sql = "select distinct user_id from merakidw.fact.ga4_events_dashboard_web where
 name = "pycarlo_check"
 time = "UTC"
 
+#call create_or_update_custom_metric_rule function 
 mutation.create_or_update_custom_metric_rule(
     dw_id=warehouse,
     comparisons=comp["comparisons"],
@@ -73,9 +74,10 @@ mutation.create_or_update_custom_metric_rule(
 
 print(client(mutation).create_or_update_custom_metric_rule)
 
+
+
 # If you are not a fan of sgqlc operations (Query and Mutation) you can also execute any raw query using the client.
 # For instance, if we want the first 10 tables from getTables.
-
 get_table_query = """
 query getTables{
   getTables(first: 10) {
@@ -87,7 +89,6 @@ query getTables{
   }
 }
 """
-
 response = client(get_table_query)
 # This returns a Box object where fields can be accessed using dot notation. 
 # Notice how unlike with the API the response uses the more Pythonic snake_case.
@@ -107,6 +108,7 @@ print(response['get_tables']['edges'][0]['node']['full_table_id'])
 # merakidw:fact.lt_performance_score_history_file_history
 # merakidw:fact.free_trials
 # merakidw:fact.lt_dashboard_pageviews_file_history
+
 
 
 
